@@ -18,7 +18,7 @@ allowed_user_ids = [my_id]
 users_messages = {}
 
 default_messages_content = [{"role": "system",
-                             "content": "You are a helpful assistant that tries to answer every question."}, ]
+                             "content": "You are an expert in sql. You answer every question related to sql"}, ]
 
 
 @bot.message_handler(commands=['add'])
@@ -92,7 +92,8 @@ def clear(message):
 def process_text_messages(message):
 
     if message.from_user.id not in allowed_user_ids:
-        bot.send_message(message.from_user.id, "You don't have access to this bot")
+        bot.send_message(message.from_user.id, f"You don't have access to this bot. "
+                                               f"Ask admin to add id {message.from_user.id}")
         print(message.from_user.id, "tried to connect")
         return
 
@@ -121,10 +122,7 @@ def process_text_messages(message):
     bot.send_message(message.from_user.id, response["choices"][0]["message"]["content"])
 
 
-while True:
-    try:
-        bot.polling(none_stop=True, interval=0)
-    except KeyboardInterrupt:
-        exit()
-    except Exception as e:
-        print(e)
+try:
+    bot.polling(none_stop=True, interval=0)
+except Exception as e:
+    print(e)
