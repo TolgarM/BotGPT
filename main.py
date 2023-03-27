@@ -18,7 +18,7 @@ allowed_user_ids = [my_id]
 users_messages = {}
 
 default_messages_content = [{"role": "system",
-                             "content": "You are an expert in sql. You answer every question related to sql"}, ]
+                             "content": "Ты значешь много по теме технической защиты информации. Ты можешь ответить на любой вопрос по этой и смежным темам"}, ]
 
 
 @bot.message_handler(commands=['add'])
@@ -119,10 +119,16 @@ def process_text_messages(message):
 
     print(users_messages)
 
-    bot.send_message(message.from_user.id, response["choices"][0]["message"]["content"])
+    if len(users_messages[message.from_user.id][-1]["content"]) > 4000:
+        chunks = [users_messages[message.from_user.id][-1]["content"][i:i+4000] for i in range(0, len(users_messages[message.from_user.id][-1]["content"]), 4000)]
+        for chunk in chunks:
+            bot.send_message(message.from_user.id, chunk)
+    else:
+        bot.send_message(message.from_user.id, response["choices"][0]["message"]["content"])
 
 
+print("Listening...")
 try:
-    bot.polling(none_stop=True, interval=0)
+    bot.infinity_polling(interval=0)
 except Exception as e:
     print(e)
