@@ -18,7 +18,7 @@ allowed_user_ids = [my_id]
 users_messages = {}
 
 default_messages_content = [{"role": "system",
-                             "content": "Ты значешь много по теме технической защиты информации. Ты можешь ответить на любой вопрос по этой и смежным темам"}, ]
+                             "content": "You are a helpful assistant"}, ]
 
 
 @bot.message_handler(commands=['add'])
@@ -105,7 +105,7 @@ def process_text_messages(message):
 
     try:
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4",
             messages=previous_messages
         )
     except openai.error.APIError as e:
