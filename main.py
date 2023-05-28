@@ -103,6 +103,9 @@ def process_text_messages(message):
     users_messages[message.from_user.id].append({"role": "user", "content": message.text})
     previous_messages = users_messages[message.from_user.id]
 
+    print(f"Received from {message.from_user.id}")
+    bot.send_message(message.from_user.id, "Message accepted, thinking...")
+
     try:
         response = openai.ChatCompletion.create(
             model="gpt-4",
